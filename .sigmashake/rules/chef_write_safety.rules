@@ -14,7 +14,7 @@ rule chef-insecure-file-permissions {
   enabled true
   priority 90
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/recipes/*.rb" AND content CONTAINS "(file|directory|template)\\s+['\"][^'\"]+['\"]\\s+do\\s+(?!.*mode\\s+['\"]0[0-7]{3}['\"]|.*mode\\s+[0-7]{3})"
   MESSAGE "Insecure file/directory permissions. Resources like 'file', 'directory', or 'template' should explicitly define a secure 'mode' (e.g., '0644' for files, '0755' for directories) to prevent unintended access. Omitting 'mode' can result in overly permissive defaults."
 }
@@ -32,7 +32,7 @@ rule chef-deprecated-node-set {
   enabled true
   priority 70
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/recipes/*.rb" AND content CONTAINS "node\\.set\\s*\\[['\"][^'\"]+['\"]\\]"
   MESSAGE "Deprecated use of 'node.set' in recipes. 'node.set' overrides all other attribute precedence levels and can lead to unexpected behavior or security issues if used improperly. Prefer 'node.default' for setting defaults or 'node.override' with caution for explicit overrides."
 }
@@ -59,7 +59,7 @@ rule chef-foodcritic-style-violation {
   enabled true
   priority 50
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/recipes/*.rb" AND content CONTAINS "node\\.attribute"
   MESSAGE "Chef style guide violation (Foodcritic FC019). Access node attributes using `node['attribute']` not `node.attribute` for consistency and to avoid potential method conflicts. Consider running Foodcritic for full style and best practice checks."
 }
